@@ -63,14 +63,8 @@ export const api = {
   // PROFILE
   async getProfile(): Promise<Profile> {
     if (isSupabaseConfigured && supabase) {
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-      if (sessionError) {
-        console.warn('Supabase session check failed:', sessionError.message);
-      }
-      if (session) {
-        const { data, error } = await supabase.from('profiles').select('*').limit(1).single();
-        if (!error && data) return data as Profile;
-      }
+      const { data, error } = await supabase.from('profiles').select('*').limit(1).single();
+      if (!error && data) return data as Profile;
     }
     return getLocalData<Profile>(STORAGE_KEYS.PROFILE, initialProfile);
   },
