@@ -72,27 +72,40 @@ export const api = {
   async updateProfile(profileData: Partial<Profile>): Promise<Profile> {
     if (isSupabaseConfigured && supabase) {
       try {
-        const existing = await supabase.from('profiles').select('id').limit(1).maybeSingle();
-        if (existing.data?.id) {
-          const { data, error } = await supabase
-            .from('profiles')
-            .update({ ...profileData, updated_at: new Date().toISOString() })
-            .eq('id', existing.data.id)
-            .select()
-            .single();
-          if (!error && data) {
-            setLocalData(STORAGE_KEYS.PROFILE, data);
-            return data as Profile;
-          }
+        const {
+          data: { session },
+          error: sessionError,
+        } = await supabase.auth.getSession();
+
+        if (sessionError) {
+          throw sessionError;
+        }
+
+        if (!session) {
+          console.warn('No active Supabase session: profile update skipped on remote store. Falling back to local storage.');
         } else {
-          const { data, error } = await supabase
-            .from('profiles')
-            .insert([{ ...profileData }])
-            .select()
-            .single();
-          if (!error && data) {
-            setLocalData(STORAGE_KEYS.PROFILE, data);
-            return data as Profile;
+          const existing = await supabase.from('profiles').select('id').limit(1).maybeSingle();
+          if (existing.data?.id) {
+            const { data, error } = await supabase
+              .from('profiles')
+              .update({ ...profileData, updated_at: new Date().toISOString() })
+              .eq('id', existing.data.id)
+              .select()
+              .single();
+            if (!error && data) {
+              setLocalData(STORAGE_KEYS.PROFILE, data);
+              return data as Profile;
+            }
+          } else {
+            const { data, error } = await supabase
+              .from('profiles')
+              .insert([{ ...profileData }])
+              .select()
+              .single();
+            if (!error && data) {
+              setLocalData(STORAGE_KEYS.PROFILE, data);
+              return data as Profile;
+            }
           }
         }
       } catch (err) {

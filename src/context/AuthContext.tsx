@@ -137,10 +137,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const updatePassword = async (newPass: string): Promise<{ success: boolean; error?: string }> => {
     try {
       if (isSupabaseConfigured && supabase) {
+        const {
+          data: { session },
+          error: sessionError,
+        } = await supabase.auth.getSession();
+
+        if (sessionError) {
+          return { success: false, error: sessionError.message };
+        }
+
+        if (!session) {
+          return {
+            success: false,
+            error: 'Aucune session active. Veuillez vous reconnecter avant de modifier votre mot de passe.',
+          };
+        }
+
         const { error } = await supabase.auth.updateUser({ password: newPass });
         if (error) return { success: false, error: error.message };
         return { success: true };
       }
+
       return { success: true };
     } catch (err: any) {
       return { success: false, error: err.message || 'Erreur lors du changement de mot de passe.' };
@@ -150,6 +167,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const updateEmail = async (newEmail: string): Promise<{ success: boolean; error?: string }> => {
     try {
       if (isSupabaseConfigured && supabase) {
+        const {
+          data: { session },
+          error: sessionError,
+        } = await supabase.auth.getSession();
+
+        if (sessionError) {
+          return { success: false, error: sessionError.message };
+        }
+
+        if (!session) {
+          return {
+            success: false,
+            error: 'Aucune session active. Veuillez vous reconnecter avant de modifier votre email.',
+          };
+        }
+
         const { error } = await supabase.auth.updateUser({ email: newEmail });
         if (error) return { success: false, error: error.message };
         return { success: true };
