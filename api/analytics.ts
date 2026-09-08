@@ -43,7 +43,12 @@ export default async function handler(req: any, res: any) {
 
     if (!propertyId || !clientEmail || !privateKey) {
       return json(res, 503, {
-        error: 'Google Analytics Data API is not configured on the server',
+        error: 'Variables GA4 manquantes sur Vercel',
+        missing: [
+          !propertyId && 'GA4_PROPERTY_ID',
+          !clientEmail && 'GOOGLE_CLIENT_EMAIL',
+          !privateKey && 'GOOGLE_PRIVATE_KEY',
+        ].filter(Boolean),
       });
     }
 
@@ -86,8 +91,11 @@ export default async function handler(req: any, res: any) {
       pageViews: Number(summary[2]?.value || 0),
       daily,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Google Analytics API error:', error);
-    return json(res, 500, { error: 'Unable to load Google Analytics data' });
+    return json(res, 500, {
+      error: 'Google Analytics refuse la requête. Vérifiez le rôle Lecteur du compte de service et l’ID de propriété GA4.',
+      details: error?.message || 'Unknown error',
+    });
   }
 }
