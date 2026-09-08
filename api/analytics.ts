@@ -41,6 +41,9 @@ export default async function handler(req: any, res: any) {
     }
 
     const propertyId = getEnv('GA4_PROPERTY_ID');
+    const requestedDays = Number(req.query?.days || 30);
+    const days = [7, 30, 90].includes(requestedDays) ? requestedDays : 30;
+    const startDate = `${days}daysAgo`;
     const encodedServiceAccount = getEnv('GOOGLE_SERVICE_ACCOUNT_JSON_BASE64');
     let clientEmail = getEnv('GOOGLE_CLIENT_EMAIL');
     let privateKey = getEnv('GOOGLE_PRIVATE_KEY');
@@ -76,7 +79,7 @@ export default async function handler(req: any, res: any) {
 
     const [summaryResponse] = await analyticsClient.runReport({
       property: `properties/${propertyId}`,
-      dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
+      dateRanges: [{ startDate, endDate: 'today' }],
       metrics: [
         { name: 'activeUsers' },
         { name: 'sessions' },
@@ -86,9 +89,13 @@ export default async function handler(req: any, res: any) {
 
     const [dailyResponse] = await analyticsClient.runReport({
       property: `properties/${propertyId}`,
-      dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
+      dateRanges: [{ startDate, endDate: 'today' }],
       dimensions: [{ name: 'date' }],
-      metrics: [{ name: 'activeUsers' }, { name: 'screenPageViews' }],
+      metrics: [
+        { name: 'activeUsers' },
+        { name: 'sessions' },
+        { name: 'screenPageViews' },
+      ],
       orderBys: [{ dimension: { dimensionName: 'date' } }],
     });
 
@@ -96,11 +103,12 @@ export default async function handler(req: any, res: any) {
     const daily = (dailyResponse.rows || []).map((row) => ({
       date: row.dimensionValues?.[0]?.value || '',
       users: Number(row.metricValues?.[0]?.value || 0),
-      pageViews: Number(row.metricValues?.[1]?.value || 0),
+      sessions: Number(row.metricValues?.[1]?.value || 0),
+      pageViews: Number(row.metricValues?.[2]?.value || 0),
     }));
 
     return json(res, 200, {
-      period: '30 derniers jours',
+      period: `${days} derniers jours`,
       activeUsers: Number(summary[0]?.value || 0),
       sessions: Number(summary[1]?.value || 0),
       pageViews: Number(summary[2]?.value || 0),
