@@ -26,7 +26,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     if (isSupabaseConfigured && supabase) {
-      // Check active Supabase session
+      // Use only the real Supabase session when credentials are configured.
       supabase.auth.getSession().then(({ data: { session } }) => {
         if (session?.user) {
           setUser({
@@ -34,16 +34,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             email: session.user.email || '',
             role: 'admin',
           });
+          localStorage.removeItem('dev_portfolio_auth_user');
         } else {
-          // Fallback to local admin session if set
-          const savedAuth = localStorage.getItem('dev_portfolio_auth_user');
-          if (savedAuth) {
-            try {
-              setUser(JSON.parse(savedAuth));
-            } catch {
-              setUser(null);
-            }
-          }
+          setUser(null);
+          localStorage.removeItem('dev_portfolio_auth_user');
         }
         setIsLoading(false);
       });
@@ -55,6 +49,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             email: session.user.email || '',
             role: 'admin',
           });
+          localStorage.removeItem('dev_portfolio_auth_user');
+        } else {
+          setUser(null);
+          localStorage.removeItem('dev_portfolio_auth_user');
         }
       });
 
@@ -62,7 +60,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         subscription.unsubscribe();
       };
     } else {
-      // Local storage auth state
+      // Demo/local mode only when Supabase is not configured.
       const savedAuth = localStorage.getItem('dev_portfolio_auth_user');
       if (savedAuth) {
         try {

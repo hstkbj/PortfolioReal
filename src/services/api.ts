@@ -63,8 +63,14 @@ export const api = {
   // PROFILE
   async getProfile(): Promise<Profile> {
     if (isSupabaseConfigured && supabase) {
-      const { data, error } = await supabase.from('profiles').select('*').limit(1).single();
-      if (!error && data) return data as Profile;
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError) {
+        console.warn('Supabase session check failed:', sessionError.message);
+      }
+      if (session) {
+        const { data, error } = await supabase.from('profiles').select('*').limit(1).single();
+        if (!error && data) return data as Profile;
+      }
     }
     return getLocalData<Profile>(STORAGE_KEYS.PROFILE, initialProfile);
   },
@@ -72,46 +78,45 @@ export const api = {
   async updateProfile(profileData: Partial<Profile>): Promise<Profile> {
     if (isSupabaseConfigured && supabase) {
       try {
-        const {
-          data: { session },
-          error: sessionError,
-        } = await supabase.auth.getSession();
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
 
-        if (sessionError) {
-          throw sessionError;
-        }
+        if (sessionError) throw sessionError;
 
         if (!session) {
-          console.warn('No active Supabase session: profile update skipped on remote store. Falling back to local storage.');
-        } else {
-          const existing = await supabase.from('profiles').select('id').limit(1).maybeSingle();
-          if (existing.data?.id) {
-            const { data, error } = await supabase
-              .from('profiles')
-              .update({ ...profileData, updated_at: new Date().toISOString() })
-              .eq('id', existing.data.id)
-              .select()
-              .single();
-            if (!error && data) {
-              setLocalData(STORAGE_KEYS.PROFILE, data);
-              return data as Profile;
-            }
-          } else {
-            const { data, error } = await supabase
-              .from('profiles')
-              .insert([{ ...profileData }])
-              .select()
-              .single();
-            if (!error && data) {
-              setLocalData(STORAGE_KEYS.PROFILE, data);
-              return data as Profile;
-            }
-          }
+          throw new Error('No active Supabase session. Please sign in again to save to the database.');
         }
-      } catch (err) {
-        console.warn('Supabase updateProfile error, fallback to local persistence:', err);
+
+        const existing = await supabase.from('profiles').select('id').limit(1).maybeSingle();
+        if (existing.data?.id) {
+          const { data, error } = await supabase
+            .from('profiles')
+            .update({ ...profileData, updated_at: new Date().toISOString() })
+            .eq('id', existing.data.id)
+            .select()
+            .single();
+          if (!error && data) {
+            setLocalData(STORAGE_KEYS.PROFILE, data);
+            return data as Profile;
+          }
+          if (error) throw error;
+        } else {
+          const { data, error } = await supabase
+            .from('profiles')
+            .insert([{ ...profileData }])
+            .select()
+            .single();
+          if (!error && data) {
+            setLocalData(STORAGE_KEYS.PROFILE, data);
+            return data as Profile;
+          }
+          if (error) throw error;
+        }
+      } catch (err: any) {
+        console.warn('Supabase updateProfile error, remote save failed:', err);
+        throw new Error(err?.message || 'Impossible de sauvegarder dans la base de données.');
       }
     }
+
     const current = getLocalData<Profile>(STORAGE_KEYS.PROFILE, initialProfile);
     const updated = { ...current, ...profileData, updated_at: new Date().toISOString() };
     setLocalData(STORAGE_KEYS.PROFILE, updated);
