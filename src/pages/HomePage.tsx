@@ -46,7 +46,7 @@ export const HomePage: React.FC = () => {
       if (!second.created_at) return -1;
       return new Date(second.created_at).getTime() - new Date(first.created_at).getTime();
     })
-    .slice(0, 4);
+    .slice(0, 3);
   const activeServices = services.filter(s => s.is_active).slice(0, 4);
   const recentPosts = blogPosts.slice(0, 3);
 
