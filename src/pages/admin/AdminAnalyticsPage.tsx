@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { BarChart3, CheckCircle2, ExternalLink, LoaderCircle, Send, XCircle } from 'lucide-react';
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 import { Button } from '../../components/common/Button';
 import { isAnalyticsConfigured, measurementId, trackEvent } from '../../lib/analytics';
 import { supabase } from '../../lib/supabase';
@@ -9,14 +19,28 @@ interface AnalyticsData {
   activeUsers: number;
   sessions: number;
   pageViews: number;
-  daily: Array<{ date: string; users: number; pageViews: number }>;
+  daily: Array<{ date: string; users: number; sessions: number; pageViews: number }>;
 }
+
+type MetricKey = 'users' | 'sessions' | 'pageViews';
+
+const metricOptions: Array<{ key: MetricKey; label: string; color: string }> = [
+  { key: 'users', label: 'Utilisateurs', color: '#f97316' },
+  { key: 'sessions', label: 'Sessions', color: '#2563eb' },
+  { key: 'pageViews', label: 'Pages vues', color: '#059669' },
+];
 
 export const AdminAnalyticsPage: React.FC = () => {
   const [testSent, setTestSent] = useState(false);
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [days, setDays] = useState(30);
+  const [visibleMetrics, setVisibleMetrics] = useState<Record<MetricKey, boolean>>({
+    users: true,
+    sessions: true,
+    pageViews: true,
+  });
   const analyticsUrl = 'https://analytics.google.com/';
 
   useEffect(() => {
@@ -32,7 +56,7 @@ export const AdminAnalyticsPage: React.FC = () => {
       }
 
       try {
-        const response = await fetch('/api/analytics', {
+        const response = await fetch(`/api/analytics?days=${days}`, {
           headers: { Authorization: `Bearer ${sessionData.session.access_token}` },
         });
         const result = await response.json();
@@ -46,10 +70,14 @@ export const AdminAnalyticsPage: React.FC = () => {
     };
 
     void loadAnalytics();
-  }, []);
+  }, [days]);
 
   const sendTestEvent = () => {
     setTestSent(trackEvent('admin_analytics_test', { source: 'admin_dashboard' }));
+  };
+
+  const toggleMetric = (metric: MetricKey) => {
+    setVisibleMetrics((current) => ({ ...current, [metric]: !current[metric] }));
   };
 
   return (
@@ -121,23 +149,68 @@ export const AdminAnalyticsPage: React.FC = () => {
 
       {data && data.daily.length > 0 && (
         <div className="p-6 rounded-xl border border-zinc-200 bg-white space-y-5">
-          <div className="flex items-center justify-between border-b border-zinc-100 pb-4">
-            <h2 className="text-sm font-bold text-zinc-900 uppercase font-mono">Activité quotidienne</h2>
-            <span className="text-xs text-zinc-500">30 derniers jours</span>
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-zinc-100 pb-4">
+            <div>
+              <h2 className="text-sm font-bold text-zinc-900 uppercase font-mono">Suivi quotidien</h2>
+              <span className="text-xs text-zinc-500">Sessions, utilisateurs et pages vues</span>
+            </div>
+            <select
+              value={days}
+              onChange={(event) => setDays(Number(event.target.value))}
+              className="px-3 py-2 rounded-lg border border-zinc-200 bg-white text-xs font-medium text-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+              aria-label="Période du graphique"
+            >
+              <option value={7}>7 derniers jours</option>
+              <option value={30}>30 derniers jours</option>
+              <option value={90}>90 derniers jours</option>
+            </select>
           </div>
-          <div className="h-48 flex items-end gap-1.5 overflow-hidden">
-            {data.daily.map((day) => {
-              const maxUsers = Math.max(...data.daily.map((item) => item.users), 1);
-              return (
-                <div key={day.date} className="flex-1 min-w-1.5 h-full flex items-end" title={`${day.date}: ${day.users} utilisateur(s)`}>
-                  <div className="w-full bg-orange-400 hover:bg-orange-500 rounded-t-sm" style={{ height: `${Math.max((day.users / maxUsers) * 100, 3)}%` }} />
-                </div>
-              );
-            })}
+
+          <div className="flex flex-wrap gap-2">
+            {metricOptions.map((metric) => (
+              <button
+                key={metric.key}
+                type="button"
+                onClick={() => toggleMetric(metric.key)}
+                className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs font-medium transition-colors ${
+                  visibleMetrics[metric.key]
+                    ? 'border-zinc-300 bg-zinc-50 text-zinc-900'
+                    : 'border-zinc-200 bg-white text-zinc-400'
+                }`}
+              >
+                <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: metric.color }} />
+                {metric.label}
+              </button>
+            ))}
           </div>
-          <div className="flex justify-between text-[11px] font-mono text-zinc-400">
-            <span>{data.daily[0]?.date}</span>
-            <span>{data.daily[data.daily.length - 1]?.date}</span>
+
+          <div className="h-72 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={data.daily} margin={{ top: 8, right: 12, left: -18, bottom: 8 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e4e4e7" />
+                <XAxis dataKey="date" tick={{ fontSize: 10 }} tickLine={false} axisLine={false} minTickGap={24} />
+                <YAxis tick={{ fontSize: 10 }} tickLine={false} axisLine={false} allowDecimals={false} />
+                <Tooltip
+                  labelFormatter={(label) => `Date : ${label}`}
+                  formatter={(value, name) => [Number(value).toLocaleString('fr-FR'), name]}
+                />
+                <Legend />
+                {metricOptions.map((metric) => (
+                  visibleMetrics[metric.key] && (
+                    <Line
+                      key={metric.key}
+                      type="monotone"
+                      dataKey={metric.key}
+                      name={metric.label}
+                      stroke={metric.color}
+                      strokeWidth={2}
+                      dot={false}
+                      activeDot={{ r: 4 }}
+                    />
+                  )
+                ))}
+              </LineChart>
+            </ResponsiveContainer>
           </div>
         </div>
       )}
