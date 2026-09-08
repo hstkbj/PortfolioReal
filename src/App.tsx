@@ -3,6 +3,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './context/AuthContext';
 import { ScrollToTop } from './components/common/ScrollToTop';
+import { trackPageView } from './lib/analytics';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 // Layouts
 import { PublicLayout } from './layouts/PublicLayout';
@@ -35,6 +38,7 @@ import { AdminBlogPage } from './pages/admin/AdminBlogPage';
 import { AdminResumePage } from './pages/admin/AdminResumePage';
 import { AdminServiceRequestsPage } from './pages/admin/AdminServiceRequestsPage';
 import { AdminMessagesPage } from './pages/admin/AdminMessagesPage';
+import { AdminAnalyticsPage } from './pages/admin/AdminAnalyticsPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,12 +50,23 @@ const queryClient = new QueryClient({
   },
 });
 
+function AnalyticsPageView() {
+   const location = useLocation();
+
+   useEffect(() => {
+      trackPageView(`${location.pathname}${location.search}`);
+   }, [location.pathname, location.search]);
+
+   return null;
+}
+
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <BrowserRouter>
           <ScrollToTop />
+          <AnalyticsPageView />
           <Routes>
             {/* 1. PUBLIC ROUTES */}
             <Route element={<PublicLayout />}>
@@ -82,6 +97,7 @@ export default function App() {
               }
             >
               <Route index element={<AdminDashboardOverview />} />
+              <Route path="analytics" element={<AdminAnalyticsPage />} />
               <Route path="profil" element={<AdminProfilePage />} />
               <Route path="projets" element={<AdminProjectsPage />} />
               <Route path="competences" element={<AdminSkillsPage />} />

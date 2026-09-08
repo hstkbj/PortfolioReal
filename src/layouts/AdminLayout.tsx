@@ -16,7 +16,8 @@ import {
   Menu, 
   X, 
   Camera,
-  Database
+  Database,
+  BarChart3
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useServiceRequests, useContactMessages, useProfile } from '../hooks/usePortfolio';
@@ -40,6 +41,7 @@ export const AdminLayout: React.FC = () => {
 
   const navLinks = [
     { to: '/admin', label: 'Vue d’ensemble', icon: <LayoutDashboard className="w-4 h-4" />, end: true },
+    { to: '/admin/analytics', label: 'Google Analytics', icon: <BarChart3 className="w-4 h-4 text-orange-500" /> },
     { to: '/admin/profil', label: 'Profil & Ma Photo', icon: <Camera className="w-4 h-4 text-blue-500" /> },
     { to: '/admin/projets', label: 'Projets réalisés', icon: <FolderGit2 className="w-4 h-4" /> },
     { to: '/admin/competences', label: 'Compétences', icon: <Code2 className="w-4 h-4" /> },
