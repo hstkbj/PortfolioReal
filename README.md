@@ -119,6 +119,31 @@ Sur Vercel :
 
 Ne jamais commiter `.env` si le fichier contient des valeurs privees.
 
+### Variables necessaires pour les statistiques dans l'admin
+
+La page `/admin/analytics` utilise une fonction Vercel cote serveur pour
+interroger Google Analytics Data API. Elle necessite un compte de service Google
+avec le role **Lecteur** sur la propriete GA4.
+
+1. Dans Google Cloud, activer **Google Analytics Data API**.
+2. Creer un compte de service et une cle JSON.
+3. Dans Google Analytics, ajouter l'adresse email du compte de service dans
+   **Administration > Gestion des accès à la propriété**, avec le role **Lecteur**.
+4. Recuperer l'identifiant numerique de la propriete GA4, pas l'identifiant
+   de mesure `G-...`.
+5. Ajouter ces variables dans Vercel, uniquement pour l'environnement **Production** :
+
+```env
+GA4_PROPERTY_ID=123456789
+GOOGLE_CLIENT_EMAIL=analytics-reader@mon-projet.iam.gserviceaccount.com
+GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+```
+
+`GOOGLE_PRIVATE_KEY` doit conserver les retours à la ligne sous la forme `\n`.
+Ne mettez jamais ces trois valeurs dans `VITE_...`, dans Git ou dans le code
+frontend. Apres l'ajout des variables, redeployez Vercel puis ouvrez
+`/admin/analytics`.
+
 ## 4. Creer Google Search Console
 
 1. Ouvrir [Google Search Console](https://search.google.com/search-console).
