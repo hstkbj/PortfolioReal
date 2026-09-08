@@ -6,6 +6,9 @@ const json = (res: any, status: number, body: unknown) => {
 
 const getEnv = (name: string) => process.env[name] || '';
 
+const cleanPrivateKey = (value: string) =>
+  value.trim().replace(/^"|"$/g, '').replace(/\\n/g, '\n');
+
 const isAdminSession = async (req: any) => {
   const authorization = req.headers.authorization || '';
   const accessToken = authorization.startsWith('Bearer ')
@@ -38,16 +41,28 @@ export default async function handler(req: any, res: any) {
     }
 
     const propertyId = getEnv('GA4_PROPERTY_ID');
-    const clientEmail = getEnv('GOOGLE_CLIENT_EMAIL');
-    const privateKey = getEnv('GOOGLE_PRIVATE_KEY').replace(/\\n/g, '\n');
+    const encodedServiceAccount = getEnv('GOOGLE_SERVICE_ACCOUNT_JSON_BASE64');
+    let clientEmail = getEnv('GOOGLE_CLIENT_EMAIL');
+    let privateKey = getEnv('GOOGLE_PRIVATE_KEY');
+
+    if (encodedServiceAccount) {
+      const serviceAccount = JSON.parse(
+        Buffer.from(encodedServiceAccount, 'base64').toString('utf8'),
+      );
+      clientEmail = serviceAccount.client_email || clientEmail;
+      privateKey = serviceAccount.private_key || privateKey;
+    }
+
+    privateKey = cleanPrivateKey(privateKey);
 
     if (!propertyId || !clientEmail || !privateKey) {
       return json(res, 503, {
         error: 'Variables GA4 manquantes sur Vercel',
         missing: [
           !propertyId && 'GA4_PROPERTY_ID',
-          !clientEmail && 'GOOGLE_CLIENT_EMAIL',
-          !privateKey && 'GOOGLE_PRIVATE_KEY',
+          !clientEmail && !encodedServiceAccount && 'GOOGLE_CLIENT_EMAIL',
+          !privateKey && !encodedServiceAccount && 'GOOGLE_PRIVATE_KEY',
+          !encodedServiceAccount && !getEnv('GOOGLE_CLIENT_EMAIL') && !getEnv('GOOGLE_PRIVATE_KEY') && 'GOOGLE_SERVICE_ACCOUNT_JSON_BASE64',
         ].filter(Boolean),
       });
     }

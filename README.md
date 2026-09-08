@@ -144,6 +144,23 @@ Ne mettez jamais ces trois valeurs dans `VITE_...`, dans Git ou dans le code
 frontend. Apres l'ajout des variables, redeployez Vercel puis ouvrez
 `/admin/analytics`.
 
+Methode recommandee si Vercel renvoie une erreur `DECODER routines::unsupported` :
+encoder le fichier JSON du compte de service en base64 localement, sans afficher
+son contenu :
+
+```powershell
+[Convert]::ToBase64String([IO.File]::ReadAllBytes('.\compte-service.json'))
+```
+
+Ajouter ensuite uniquement cette variable dans Vercel :
+
+```env
+GOOGLE_SERVICE_ACCOUNT_JSON_BASE64=BASE64_DU_FICHIER_JSON
+```
+
+Le endpoint `/api/analytics` lit cette variable en priorite et extrait
+automatiquement `client_email` et `private_key`.
+
 ## 4. Creer Google Search Console
 
 1. Ouvrir [Google Search Console](https://search.google.com/search-console).
