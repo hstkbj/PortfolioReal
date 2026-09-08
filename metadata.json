@@ -1,0 +1,6 @@
+{
+  "name": "Portfolio Développeur Web",
+  "description": "Portfolio professionnel d'un développeur web fullstack expérimenté présentant projets, expériences, compétences, services et blog.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
