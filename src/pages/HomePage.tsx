@@ -40,8 +40,7 @@ export const HomePage: React.FC = () => {
   const { data: blogPosts = [] } = useBlogPosts(true);
   const { activeResume } = useResumes();
 
-  const featuredProjects = [...projects]
-    .filter((project) => project.is_featured)
+  const recentProjects = [...projects]
     .sort((first, second) => {
       if (!first.created_at) return 1;
       if (!second.created_at) return -1;
@@ -242,7 +241,7 @@ export const HomePage: React.FC = () => {
 
           {/* Projects Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {featuredProjects.map((project) => (
+            {recentProjects.map((project) => (
               <article 
                 key={project.id}
                 className="group flex flex-col rounded-xl border border-zinc-200 bg-white overflow-hidden hover:border-zinc-300 hover:shadow-md transition-all duration-200"
