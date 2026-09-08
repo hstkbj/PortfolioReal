@@ -81,24 +81,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
 
       if (error) {
-        // If email not confirmed in Supabase, but credentials match the initial created user
         if (
           error.message?.toLowerCase().includes('email not confirmed') ||
           (error as any).code === 'email_not_confirmed'
         ) {
-          if (email.toLowerCase() === 'soheholmes7@gmail.com' && pass.length >= 6) {
-            const adminUser: AuthUser = {
-              id: '1748ba42-273e-498b-a8e5-83ced3bd2714',
-              email: 'soheholmes7@gmail.com',
-              role: 'admin',
-            };
-            setUser(adminUser);
-            localStorage.setItem('dev_portfolio_auth_user', JSON.stringify(adminUser));
-            return {
-              success: true,
-              warning: 'Votre email n’est pas encore confirmé dans Supabase, mais la session administrateur a été ouverte avec succès.',
-            };
-          }
+          return {
+            success: false,
+            error: 'Votre email Supabase n’est pas confirmé. Confirmez-le dans Supabase > Authentication > Users puis réessayez.',
+          };
         }
 
         return { success: false, error: error.message };
@@ -111,7 +101,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           role: 'admin',
         };
         setUser(loggedUser);
-        localStorage.setItem('dev_portfolio_auth_user', JSON.stringify(loggedUser));
+        localStorage.removeItem('dev_portfolio_auth_user');
         return { success: true };
       }
 

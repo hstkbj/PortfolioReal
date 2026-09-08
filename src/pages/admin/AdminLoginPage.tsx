@@ -15,11 +15,12 @@ export const AdminLoginPage: React.FC = () => {
   const [warning, setWarning] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // If already logged in, redirect
-  if (user) {
-    const from = (location.state as any)?.from?.pathname || '/admin';
-    navigate(from, { replace: true });
-  }
+  React.useEffect(() => {
+    if (user) {
+      const from = (location.state as any)?.from?.pathname || '/admin';
+      navigate(from, { replace: true });
+    }
+  }, [user, navigate, location.state]);
 
   const handleLogin = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
