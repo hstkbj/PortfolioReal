@@ -9,8 +9,8 @@ export const AdminLoginPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [email, setEmail] = useState('soheholmes7@gmail.com');
-  const [password, setPassword] = useState('AdminPassword2025!');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [warning, setWarning] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -77,45 +77,9 @@ export const AdminLoginPage: React.FC = () => {
             </div>
           )}
 
-          {/* Carte Identifiant Administrateur créé */}
-          <div className="p-4 rounded-xl bg-blue-50/70 border border-blue-200 text-xs space-y-2.5">
-            <div className="flex items-center justify-between text-blue-900 font-semibold">
-              <span className="flex items-center gap-1.5 font-mono">
-                <ShieldCheck className="w-4 h-4 text-blue-600" />
-                Votre compte Administrateur créé
-              </span>
-              <span className="text-[10px] text-blue-700 font-mono bg-blue-100 px-2 py-0.5 rounded">Actif</span>
-            </div>
-            
-            <div className="space-y-1 font-mono text-[11px] text-blue-950 bg-white/80 p-2.5 rounded-lg border border-blue-100">
-              <div className="flex justify-between">
-                <span className="text-zinc-500">Email :</span>
-                <strong className="text-zinc-900">soheholmes7@gmail.com</strong>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-zinc-500">Mot de passe provisoire :</span>
-                <strong className="text-zinc-900">AdminPassword2025!</strong>
-              </div>
-            </div>
-
-            <p className="text-[11px] text-blue-800 leading-relaxed">
-              Vous pourrez modifier votre mot de passe et votre email à tout moment dans l'onglet <strong>Profil & Ma Photo</strong>.
-            </p>
-
-            <button
-              type="button"
-              onClick={() => handleLogin()}
-              disabled={isLoading}
-              className="w-full py-2.5 px-3 rounded-lg bg-zinc-900 text-white text-xs font-semibold hover:bg-zinc-800 transition-colors flex items-center justify-center gap-1.5 shadow-2xs"
-            >
-              <span>Se connecter à mon espace Admin</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
           <div className="relative flex py-1 items-center">
             <div className="flex-grow border-t border-zinc-200"></div>
-            <span className="flex-shrink mx-4 text-[11px] font-mono text-zinc-400">ou saisie manuelle</span>
+            <span className="flex-shrink mx-4 text-[11px] font-mono text-zinc-400">Connexion admin</span>
             <div className="flex-grow border-t border-zinc-200"></div>
           </div>
 
@@ -134,7 +98,7 @@ export const AdminLoginPage: React.FC = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="block w-full pl-9 pr-3 py-2 rounded-lg border border-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-zinc-900"
-                  placeholder="soheholmes7@gmail.com"
+                  placeholder="votre.email@exemple.com"
                 />
               </div>
             </div>
@@ -153,7 +117,7 @@ export const AdminLoginPage: React.FC = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="block w-full pl-9 pr-3 py-2 rounded-lg border border-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-zinc-900"
-                  placeholder="••••••••••••"
+                  placeholder="Votre mot de passe"
                 />
               </div>
             </div>
