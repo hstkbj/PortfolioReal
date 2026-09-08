@@ -40,7 +40,14 @@ export const HomePage: React.FC = () => {
   const { data: blogPosts = [] } = useBlogPosts(true);
   const { activeResume } = useResumes();
 
-  const featuredProjects = projects.filter(p => p.is_featured).slice(0, 3);
+  const featuredProjects = [...projects]
+    .filter((project) => project.is_featured)
+    .sort((first, second) => {
+      if (!first.created_at) return 1;
+      if (!second.created_at) return -1;
+      return new Date(second.created_at).getTime() - new Date(first.created_at).getTime();
+    })
+    .slice(0, 4);
   const activeServices = services.filter(s => s.is_active).slice(0, 4);
   const recentPosts = blogPosts.slice(0, 3);
 
