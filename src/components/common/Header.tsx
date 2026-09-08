@@ -107,8 +107,7 @@ export const Header: React.FC = () => {
                 variant="outline"
                 size="sm"
                 href={activeResume.file_url}
-                target="_blank"
-                rel="noopener noreferrer"
+                download={activeResume.file_name}
                 leftIcon={<Download className="w-3.5 h-3.5" />}
                 id="btn-header-cv"
               >
@@ -197,8 +196,7 @@ export const Header: React.FC = () => {
                 variant="outline"
                 size="md"
                 href={activeResume.file_url}
-                target="_blank"
-                rel="noopener noreferrer"
+                download={activeResume.file_name}
                 leftIcon={<Download className="w-4 h-4" />}
                 className="w-full justify-center"
               >

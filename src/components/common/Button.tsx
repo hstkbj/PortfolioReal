@@ -8,6 +8,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string;
   target?: string;
   rel?: string;
+  download?: string;
   isLoading?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
@@ -21,6 +22,7 @@ export const Button: React.FC<ButtonProps> = ({
   href,
   target,
   rel,
+  download,
   isLoading = false,
   leftIcon,
   rightIcon,
@@ -71,7 +73,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   if (href) {
     return (
-      <a href={href} target={target} rel={rel} className={combinedClass}>
+      <a href={href} target={target} rel={rel} download={download} className={combinedClass} {...rest}>
         {content}
       </a>
     );

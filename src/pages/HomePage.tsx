@@ -129,8 +129,7 @@ export const HomePage: React.FC = () => {
                     variant="secondary"
                     size="lg"
                     href={activeResume.file_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    download={activeResume.file_name}
                     leftIcon={<Download className="w-4 h-4" />}
                     id="hero-cta-cv"
                   >

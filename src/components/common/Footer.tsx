@@ -130,8 +130,7 @@ export const Footer: React.FC = () => {
                 <li>
                   <a 
                     href={activeResume.file_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    download={activeResume.file_name}
                     className="inline-flex items-center gap-1.5 font-medium text-zinc-900 hover:text-zinc-700 transition-colors"
                   >
                     <Download className="w-4 h-4 text-zinc-700" />

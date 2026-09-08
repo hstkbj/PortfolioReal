@@ -180,8 +180,7 @@ export const AboutPage: React.FC = () => {
                 variant="outline"
                 size="md"
                 href={activeResume.file_url}
-                target="_blank"
-                rel="noopener noreferrer"
+                download={activeResume.file_name}
                 leftIcon={<Download className="w-4 h-4" />}
                 className="border-zinc-700 text-white hover:bg-zinc-800"
               >
