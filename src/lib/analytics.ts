@@ -6,8 +6,9 @@ declare global {
 }
 
 const env = (import.meta as any).env || {};
+const defaultMeasurementId = 'G-7P4R85DG4C';
 
-export const measurementId = env.VITE_GA_MEASUREMENT_ID as string | undefined;
+export const measurementId = (env.VITE_GA_MEASUREMENT_ID || defaultMeasurementId) as string;
 
 export const isAnalyticsConfigured = Boolean(measurementId);
 
