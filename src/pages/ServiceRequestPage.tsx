@@ -256,17 +256,17 @@ export const ServiceRequestPage: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="space-y-1.5">
                 <label className="block text-xs font-mono font-medium text-zinc-800 uppercase tracking-wide">
-                  Budget indicatif
+                  Budget indicatif (XOF)
                 </label>
                 <select
                   {...register('budget')}
                   className="w-full px-3.5 py-2.5 rounded-lg border border-zinc-200 bg-white text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent transition-all"
                 >
                   <option value="">Sélectionner une fourchette...</option>
-                  <option value="Moins de 2 000 €">&lt; 2 000 €</option>
-                  <option value="2 000 € - 5 000 €">2 000 € - 5 000 €</option>
-                  <option value="5 000 € - 10 000 €">5 000 € - 10 000 €</option>
-                  <option value="Plus de 10 000 €">&gt; 10 000 €</option>
+                  <option value="50 000 XOF - 150 000 XOF">50 000 XOF - 150 000 XOF</option>
+                  <option value="150 000 XOF - 300 000 XOF">150 000 XOF - 300 000 XOF</option>
+                  <option value="300 000 XOF - 500 000 XOF">300 000 XOF - 500 000 XOF</option>
+                  <option value="Plus de 500 000 XOF">Plus de 500 000 XOF</option>
                   <option value="TJM / Régie (au temps passé)">TJM / Régie (au temps passé)</option>
                 </select>
               </div>
