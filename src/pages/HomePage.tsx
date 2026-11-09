@@ -683,7 +683,7 @@ export const HomePage: React.FC = () => {
 
           <div className="flex flex-wrap justify-center gap-4 pt-4">
             <Button
-              variant="primary"
+              variant="outline"
               size="lg"
               to="/demande-service"
               className="bg-white text-zinc-950 hover:bg-zinc-100 font-semibold border-white"
@@ -695,7 +695,7 @@ export const HomePage: React.FC = () => {
               variant="outline"
               size="lg"
               to="/contact"
-              className="border-zinc-700 text-white hover:bg-zinc-800"
+              className="border-zinc-700 text-white hover:bg-zinc-100"
             >
               Envoyer un message direct
             </Button>

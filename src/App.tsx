@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Analytics } from '@vercel/analytics/react';
 import { AuthProvider } from './context/AuthContext';
 import { ScrollToTop } from './components/common/ScrollToTop';
 import { trackPageView } from './lib/analytics';
@@ -67,6 +68,7 @@ export default function App() {
         <BrowserRouter>
           <ScrollToTop />
           <AnalyticsPageView />
+          <Analytics />
           <Routes>
             {/* 1. PUBLIC ROUTES */}
             <Route element={<PublicLayout />}>
