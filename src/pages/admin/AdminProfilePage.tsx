@@ -69,6 +69,8 @@ export const AdminProfilePage: React.FC = () => {
       location: '',
       github_url: '',
       linkedin_url: '',
+      facebook_url: '',
+      instagram_url: '',
       twitter_url: '',
       is_available_for_hire: true,
     },
@@ -93,6 +95,8 @@ export const AdminProfilePage: React.FC = () => {
         location: profile.location,
         github_url: profile.github_url || '',
         linkedin_url: profile.linkedin_url || '',
+        facebook_url: profile.facebook_url || '',
+        instagram_url: profile.instagram_url || '',
         twitter_url: profile.twitter_url || '',
         is_available_for_hire: profile.is_available_for_hire,
       });
@@ -433,7 +437,7 @@ export const AdminProfilePage: React.FC = () => {
           </div>
 
           {/* Liens réseaux sociaux */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
             <div className="space-y-1.5">
               <label className="block text-xs font-mono font-medium text-zinc-700 uppercase">
                 Lien GitHub *
@@ -458,6 +462,32 @@ export const AdminProfilePage: React.FC = () => {
               />
             </div>
 
+            <div className="space-y-1.5">
+              <label className="block text-xs font-mono font-medium text-zinc-700 uppercase">
+                Facebook
+              </label>
+              <input
+                type="url"
+                placeholder="https://facebook.com/..."
+                {...register('facebook_url')}
+                className="w-full px-3.5 py-2.5 rounded-lg border border-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="block text-xs font-mono font-medium text-zinc-700 uppercase">
+                Instagram
+              </label>
+              <input
+                type="url"
+                placeholder="https://instagram.com/..."
+                {...register('instagram_url')}
+                className="w-full px-3.5 py-2.5 rounded-lg border border-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-1 gap-5 pt-1">
             <div className="space-y-1.5">
               <label className="block text-xs font-mono font-medium text-zinc-700 uppercase">
                 Lien Twitter / X

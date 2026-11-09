@@ -3,6 +3,7 @@ import { Briefcase, Calendar, MapPin, CheckCircle2, ArrowRight } from 'lucide-re
 import { useExperiences } from '../hooks/usePortfolio';
 import { Badge } from '../components/common/Badge';
 import { Button } from '../components/common/Button';
+import { PageSkeleton } from '../components/common/Skeleton';
 
 export const ExperiencesPage: React.FC = () => {
   const { data: experiences = [], isLoading } = useExperiences();
@@ -26,9 +27,7 @@ export const ExperiencesPage: React.FC = () => {
 
         {/* Timeline */}
         {isLoading ? (
-          <div className="py-20 text-center text-zinc-400 font-mono text-sm">
-            Chargement du parcours...
-          </div>
+          <PageSkeleton lines={3} />
         ) : (
           <div className="relative border-l-2 border-zinc-200 ml-3 sm:ml-6 space-y-12">
             {experiences.map((exp) => (

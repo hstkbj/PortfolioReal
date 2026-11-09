@@ -10,6 +10,8 @@ import {
   Phone, 
   Github, 
   Linkedin, 
+  Facebook, 
+  Instagram, 
   MessageSquare 
 } from 'lucide-react';
 import { contactSchema, ContactFormData } from '../schemas';
@@ -156,6 +158,28 @@ export const ContactPage: React.FC = () => {
                   >
                     <Linkedin className="w-4 h-4" />
                     <span>Profil LinkedIn</span>
+                  </a>
+                )}
+                {profile?.facebook_url && (
+                  <a
+                    href={profile.facebook_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-zinc-700 hover:text-zinc-950 font-medium"
+                  >
+                    <Facebook className="w-4 h-4" />
+                    <span>Page Facebook</span>
+                  </a>
+                )}
+                {profile?.instagram_url && (
+                  <a
+                    href={profile.instagram_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-zinc-700 hover:text-zinc-950 font-medium"
+                  >
+                    <Instagram className="w-4 h-4" />
+                    <span>Profil Instagram</span>
                   </a>
                 )}
               </div>

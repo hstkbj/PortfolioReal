@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ExternalLink, Github, Search, Filter } from 'lucide-react';
 import { useProjects } from '../hooks/usePortfolio';
 import { Badge } from '../components/common/Badge';
+import { PageSkeleton } from '../components/common/Skeleton';
 
 export const ProjectsPage: React.FC = () => {
   const { data: projects = [], isLoading } = useProjects();
@@ -78,9 +79,7 @@ export const ProjectsPage: React.FC = () => {
 
         {/* Project Grid */}
         {isLoading ? (
-          <div className="py-20 text-center text-zinc-400 font-mono text-sm">
-            Chargement des projets...
-          </div>
+          <PageSkeleton lines={6} />
         ) : filteredProjects.length === 0 ? (
           <div className="py-16 text-center bg-white rounded-xl border border-zinc-200 p-8">
             <p className="text-sm text-zinc-500">Aucun projet ne correspond à vos critères de recherche.</p>

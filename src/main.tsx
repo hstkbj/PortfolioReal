@@ -4,7 +4,9 @@ import { initAnalytics } from './lib/analytics';
 import App from './App.tsx';
 import './index.css';
 
-initAnalytics();
+if (typeof window !== 'undefined') {
+  initAnalytics();
+}
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

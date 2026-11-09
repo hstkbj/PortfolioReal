@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Code2, Server, Database, Wrench, CheckCircle } from 'lucide-react';
 import { useSkills } from '../hooks/usePortfolio';
 import { SkillCategoryType } from '../types';
+import { PageSkeleton } from '../components/common/Skeleton';
 
 export const SkillsPage: React.FC = () => {
   const { data: skills = [], isLoading } = useSkills();
@@ -69,9 +70,7 @@ export const SkillsPage: React.FC = () => {
 
         {/* Skills Grid */}
         {isLoading ? (
-          <div className="py-20 text-center text-zinc-400 font-mono text-sm">
-            Chargement des compétences...
-          </div>
+          <PageSkeleton lines={6} />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredSkills.map((skill) => (

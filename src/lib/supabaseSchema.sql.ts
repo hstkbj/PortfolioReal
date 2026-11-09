@@ -20,6 +20,8 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   whatsapp TEXT,
   github_url TEXT NOT NULL,
   linkedin_url TEXT NOT NULL,
+  facebook_url TEXT,
+  instagram_url TEXT,
   twitter_url TEXT,
   is_available_for_hire BOOLEAN DEFAULT true,
   years_of_experience INTEGER DEFAULT 5,

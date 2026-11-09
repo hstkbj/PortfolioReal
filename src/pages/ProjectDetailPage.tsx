@@ -12,6 +12,7 @@ import {
 import { useProject } from '../hooks/usePortfolio';
 import { Button } from '../components/common/Button';
 import { Badge } from '../components/common/Badge';
+import { BlogArticleSkeleton } from '../components/common/Skeleton';
 
 export const ProjectDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -19,11 +20,7 @@ export const ProjectDetailPage: React.FC = () => {
   const { data: project, isLoading, error } = useProject(slug || '');
 
   if (isLoading) {
-    return (
-      <div className="py-24 text-center text-zinc-500 font-mono text-sm">
-        Chargement du projet...
-      </div>
-    );
+    return <BlogArticleSkeleton />;
   }
 
   if (error || !project) {

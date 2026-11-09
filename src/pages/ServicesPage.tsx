@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useServices } from '../hooks/usePortfolio';
 import { Button } from '../components/common/Button';
+import { PageSkeleton } from '../components/common/Skeleton';
 
 export const ServicesPage: React.FC = () => {
   const { data: services = [], isLoading } = useServices();
@@ -85,9 +86,7 @@ export const ServicesPage: React.FC = () => {
 
         {/* Services List */}
         {isLoading ? (
-          <div className="py-20 text-center text-zinc-400 font-mono text-sm">
-            Chargement des services...
-          </div>
+          <PageSkeleton lines={4} />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {activeServices.map((service) => (

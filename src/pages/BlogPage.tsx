@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Search, ArrowRight, Clock, Calendar, Tag } from 'lucide-react';
 import { useBlogPosts } from '../hooks/usePortfolio';
 import { Badge } from '../components/common/Badge';
+import { PageSkeleton } from '../components/common/Skeleton';
 
 export const BlogPage: React.FC = () => {
   const { data: posts = [], isLoading } = useBlogPosts(true);
@@ -70,9 +71,7 @@ export const BlogPage: React.FC = () => {
 
         {/* Posts Grid */}
         {isLoading ? (
-          <div className="py-20 text-center text-zinc-400 font-mono text-sm">
-            Chargement des articles...
-          </div>
+          <PageSkeleton lines={6} />
         ) : filteredPosts.length === 0 ? (
           <div className="py-16 text-center bg-white rounded-xl border border-zinc-200 p-8">
             <p className="text-sm text-zinc-500">Aucun article ne correspond à votre recherche.</p>

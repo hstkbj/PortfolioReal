@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { 
   Github, 
   Linkedin, 
+  Facebook, 
+  Instagram, 
   Mail, 
   Phone, 
   MapPin, 
@@ -122,6 +124,34 @@ export const Footer: React.FC = () => {
                   >
                     <Linkedin className="w-4 h-4" />
                     <span>LinkedIn</span>
+                    <ArrowUpRight className="w-3 h-3 text-zinc-400" />
+                  </a>
+                </li>
+              )}
+              {profile?.facebook_url && (
+                <li>
+                  <a 
+                    href={profile.facebook_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 hover:text-zinc-950 transition-colors"
+                  >
+                    <Facebook className="w-4 h-4" />
+                    <span>Facebook</span>
+                    <ArrowUpRight className="w-3 h-3 text-zinc-400" />
+                  </a>
+                </li>
+              )}
+              {profile?.instagram_url && (
+                <li>
+                  <a 
+                    href={profile.instagram_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 hover:text-zinc-950 transition-colors"
+                  >
+                    <Instagram className="w-4 h-4" />
+                    <span>Instagram</span>
                     <ArrowUpRight className="w-3 h-3 text-zinc-400" />
                   </a>
                 </li>

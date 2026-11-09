@@ -4,6 +4,7 @@ import { ArrowLeft, Clock, Calendar, User, Tag, Share2, ArrowRight } from 'lucid
 import { useBlogPost, useBlogPosts } from '../hooks/usePortfolio';
 import { Button } from '../components/common/Button';
 import { Badge } from '../components/common/Badge';
+import { BlogArticleSkeleton } from '../components/common/Skeleton';
 
 export const BlogPostPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -12,11 +13,7 @@ export const BlogPostPage: React.FC = () => {
   const { data: allPosts = [] } = useBlogPosts(true);
 
   if (isLoading) {
-    return (
-      <div className="py-24 text-center text-zinc-400 font-mono text-sm">
-        Chargement de l'article...
-      </div>
-    );
+    return <BlogArticleSkeleton />;
   }
 
   if (error || !post) {

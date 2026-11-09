@@ -39,11 +39,11 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   const variantClasses = {
-    primary: 'bg-zinc-900 text-white hover:bg-zinc-800 shadow-sm',
-    secondary: 'bg-zinc-100 text-zinc-900 hover:bg-zinc-200/80',
-    outline: 'bg-transparent border border-zinc-300 text-zinc-800 hover:bg-zinc-100 hover:border-zinc-400',
+    primary: 'bg-zinc-900 text-white hover:bg-zinc-800 shadow-sm border border-zinc-900',
+    secondary: 'bg-zinc-100 text-zinc-900 hover:bg-zinc-200/80 border border-zinc-200',
+    outline: 'bg-white border border-zinc-300 text-zinc-900 hover:bg-zinc-100 hover:border-zinc-400',
     ghost: 'bg-transparent text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100/80',
-    danger: 'bg-red-600 text-white hover:bg-red-700 shadow-sm',
+    danger: 'bg-red-600 text-white hover:bg-red-700 shadow-sm border border-red-600',
   };
 
   const combinedClass = `${base} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`;

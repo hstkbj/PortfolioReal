@@ -14,6 +14,8 @@ export interface Profile {
   whatsapp?: string;
   github_url: string;
   linkedin_url: string;
+  facebook_url?: string;
+  instagram_url?: string;
   twitter_url?: string;
   is_available_for_hire: boolean;
   years_of_experience: number;
