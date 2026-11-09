@@ -686,7 +686,7 @@ export const HomePage: React.FC = () => {
               variant="primary"
               size="lg"
               to="/demande-service"
-              className="bg-white text-zinc-950 hover:bg-zinc-100 font-semibold"
+              className="bg-white text-zinc-950 hover:bg-zinc-100 font-semibold border-white"
               rightIcon={<ArrowRight className="w-4 h-4" />}
             >
               Demander un service / devis
