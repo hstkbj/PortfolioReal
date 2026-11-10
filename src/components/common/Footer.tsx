@@ -38,7 +38,7 @@ export const Footer: React.FC = () => {
               )}
             </div>
             <p className="text-sm text-zinc-600 max-w-md leading-relaxed">
-              {profile?.tagline || 'Conception d'architectures robustes, d'APIs performantes et d'interfaces modernes'}
+              {profile?.tagline || "Conception d'architectures robustes, d'APIs performantes et d'interfaces modernes"}
             </p>
             <div className="flex flex-wrap gap-4 pt-2 text-sm text-zinc-500">
               <span className="inline-flex items-center gap-1.5">

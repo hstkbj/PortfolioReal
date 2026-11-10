@@ -85,7 +85,7 @@ export const HomePage: React.FC = () => {
                   </span>
                 </h1>
                 <p className="text-lg sm:text-xl text-zinc-700 font-normal leading-relaxed max-w-2xl">
-                  {profile?.tagline || 'Conception d'architectures robustes, d'APIs performantes et d'interfaces modernes'}
+                  {profile?.tagline || "Conception d'architectures robustes, d'APIs performantes et d'interfaces modernes"}
                 </p>
               </div>
 

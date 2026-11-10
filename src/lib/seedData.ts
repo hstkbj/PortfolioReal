@@ -4,7 +4,7 @@ export const initialProfile: Profile = {
   id: 'profile-1',
   full_name: 'Holmes SOHE',
   title: 'Développeur Web Fullstack Senior',
-  tagline: 'Conception d'architectures robustes, d'APIs performantes et d'interfaces modernes',
+  tagline: "Conception d'architectures robustes, d'APIs performantes et d'interfaces modernes",
   bio_short: 'Fort de plus de 5 années d’expérience, j’accompagne entreprises et startups dans la conception, le développement et le passage à l’échelle d’applications SaaS, d’architectures Laravel / Node.js et d’interfaces réactives React & Vue.js.',
   bio_full: 'Passionné par l’ingénierie logicielle et les architectures maintenables, je conçois des systèmes d’information robustes centrés sur la valeur métier. Mon expertise couvre l’écosystème Laravel/PHP et Node.js côté backend, ainsi que React.js et TypeScript côté frontend.\n\nRigoureux dans mes choix techniques, j’accorde une attention particulière aux performances des bases de données (PostgreSQL, MySQL), à la sécurité des API REST et à la clarté du code pour assurer une pérennité maximale aux projets.',
   avatar_url: 'https://media.licdn.com/dms/image/v2/D4E03AQG7pcsTGXA36A/profile-displayphoto-scale_400_400/B4EZmpFlpeKYAg-/0/1759478441365?e=1795651200&v=beta&t=lMbNmYMCzE9QX2IN0RA2Xo6bptgA-tYmVN4NW0JSiZw',
