@@ -28,7 +28,7 @@ export const Footer: React.FC = () => {
           <div className="md:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
               <span className="font-bold text-zinc-950 text-lg tracking-tight">
-                {profile?.full_name || 'Alexandre Renard'}
+                {profile?.full_name || 'Holmes SOHE'}
               </span>
               {profile?.is_available_for_hire && (
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-50 text-emerald-700 border border-emerald-200">
@@ -38,7 +38,7 @@ export const Footer: React.FC = () => {
               )}
             </div>
             <p className="text-sm text-zinc-600 max-w-md leading-relaxed">
-              {profile?.tagline || 'Je conçois des applications web modernes, performantes et adaptées aux besoins métier.'}
+              {profile?.tagline || 'Conception d'architectures robustes, d'APIs performantes et d'interfaces modernes'}
             </p>
             <div className="flex flex-wrap gap-4 pt-2 text-sm text-zinc-500">
               <span className="inline-flex items-center gap-1.5">

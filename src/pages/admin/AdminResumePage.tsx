@@ -149,7 +149,7 @@ export const AdminResumePage: React.FC = () => {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="ex: CV Alexandre Renard - Lead Developer 2025"
+              placeholder="ex: CV Holmes SOHE - Lead Developer 2025"
               className="w-full px-3 py-2 rounded-lg border border-zinc-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900"
             />
           </div>

@@ -207,10 +207,10 @@ Search Console, menu **Sitemaps**.
 Dans `index.html`, conserver au minimum :
 
 ```html
-<title>Alexandre Renard - Developpeur Web Fullstack</title>
+<title>Holmes SOHE - Developpeur Web Fullstack</title>
 <meta
    name="description"
-   content="Portfolio d'Alexandre Renard, developpeur web fullstack specialise en React, Laravel, Node.js et applications SaaS."
+   content="Portfolio de Holmes SOHE, developpeur web fullstack specialise en React, Laravel, Node.js et applications SaaS."
 />
 <link rel="canonical" href="https://holmesdev.vercel.app/" />
 <meta property="og:url" content="https://holmesdev.vercel.app/" />

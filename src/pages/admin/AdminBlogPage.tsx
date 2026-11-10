@@ -29,7 +29,7 @@ export const AdminBlogPage: React.FC = () => {
       main_image: '',
       category: 'Architecture',
       tags: 'Backend, Architecture, CleanCode',
-      author: 'Alexandre Renard',
+      author: 'Holmes SOHE',
       reading_time_minutes: 5,
       status: 'published',
     },
@@ -45,7 +45,7 @@ export const AdminBlogPage: React.FC = () => {
       main_image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop',
       category: 'Architecture',
       tags: 'Backend, Architecture, CleanCode',
-      author: 'Alexandre Renard',
+      author: 'Holmes SOHE',
       reading_time_minutes: 6,
       status: 'published',
     });

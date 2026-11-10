@@ -89,7 +89,7 @@ export const ResumePage: React.FC = () => {
               </div>
               <div className="p-4 rounded-xl bg-zinc-50 border border-zinc-200/70">
                 <span className="text-xs font-mono text-zinc-400 block mb-1">LOCALISATION</span>
-                <p className="text-sm font-bold text-zinc-900">Paris & Remote</p>
+                <p className="text-sm font-bold text-zinc-900">Cotonou, Bénin</p>
                 <p className="text-xs text-zinc-500 mt-1">Disponible pour missions</p>
               </div>
             </div>

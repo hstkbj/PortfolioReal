@@ -38,7 +38,7 @@ export const AdminExperiencesPage: React.FC = () => {
     reset({
       role: '',
       company: '',
-      location: 'Paris & Remote',
+      location: 'Cotonou, Bénin',
       period: '2024 - Présent',
       is_current: true,
       description: '',

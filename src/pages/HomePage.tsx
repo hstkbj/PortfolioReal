@@ -79,13 +79,13 @@ export const HomePage: React.FC = () => {
               {/* Title & Headline */}
               <div className="space-y-3">
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-zinc-950 tracking-tight leading-[1.15]">
-                  {profile?.full_name || 'Alexandre Renard'}
+                  {profile?.full_name || 'Holmes SOHE'}
                   <span className="block text-zinc-500 font-medium text-2xl sm:text-3xl mt-1">
                     {profile?.title || 'Développeur Web Fullstack Senior'}
                   </span>
                 </h1>
                 <p className="text-lg sm:text-xl text-zinc-700 font-normal leading-relaxed max-w-2xl">
-                  {profile?.tagline || 'Je conçois des applications web modernes, performantes et adaptées aux besoins métier.'}
+                  {profile?.tagline || 'Conception d'architectures robustes, d'APIs performantes et d'interfaces modernes'}
                 </p>
               </div>
 
@@ -148,13 +148,13 @@ export const HomePage: React.FC = () => {
               <div className="grid grid-cols-3 gap-4 pt-6 border-t border-zinc-200/80 max-w-lg">
                 <div>
                   <div className="text-2xl sm:text-3xl font-bold font-mono text-zinc-950">
-                    +{profile?.years_of_experience || 7} ans
+                    +{profile?.years_of_experience || 0} ans
                   </div>
                   <div className="text-xs text-zinc-500 mt-0.5">d’expérience réelle</div>
                 </div>
                 <div>
                   <div className="text-2xl sm:text-3xl font-bold font-mono text-zinc-950">
-                    +{profile?.completed_projects_count || 40}
+                    +{profile?.completed_projects_count || 0}
                   </div>
                   <div className="text-xs text-zinc-500 mt-0.5">projets livrés</div>
                 </div>
@@ -188,7 +188,7 @@ export const HomePage: React.FC = () => {
                       <div className="flex items-center justify-between text-zinc-900 font-medium">
                         <span className="flex items-center gap-1.5">
                           <MapPin className="w-3.5 h-3.5 text-zinc-500" />
-                          {profile?.location || 'Paris & Remote'}
+                          {profile?.location || 'Cotonou, Bénin'}
                         </span>
                         <span className="font-mono text-zinc-500">PHP • TS • SQL</span>
                       </div>
