@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { useBlogPosts } from '../../hooks/usePortfolio';
@@ -7,6 +7,22 @@ import { blogPostSchema, BlogPostFormData } from '../../schemas';
 import { BlogPost } from '../../types';
 import { Modal } from '../../components/common/Modal';
 import { Button } from '../../components/common/Button';
+import { RichTextEditor } from '../../components/admin/RichTextEditor';
+
+function toEditorHtml(content: string): string {
+  if (/<[a-z][\s\S]*>/i.test(content)) return content;
+  const escapeHtml = (value: string) => value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return content.split(/\n\s*\n/).map((block) => {
+    const trimmed = block.trim();
+    if (!trimmed) return '';
+    if (trimmed.startsWith('```')) return `<pre><code>${escapeHtml(trimmed.replace(/^```[\w-]*\n?/, '').replace(/\n?```$/, ''))}</code></pre>`;
+    const heading = /^(#{1,4})\s+(.+)$/.exec(trimmed);
+    if (heading) return `<h${heading[1].length}>${escapeHtml(heading[2])}</h${heading[1].length}>`;
+    if (/^[-*+]\s/m.test(trimmed)) return `<ul>${trimmed.split('\n').map((line) => `<li>${escapeHtml(line.replace(/^[-*+]\s+/, ''))}</li>`).join('')}</ul>`;
+    if (/^\d+\.\s/m.test(trimmed)) return `<ol>${trimmed.split('\n').map((line) => `<li>${escapeHtml(line.replace(/^\d+\.\s+/, ''))}</li>`).join('')}</ol>`;
+    return `<p>${escapeHtml(trimmed).replace(/\n/g, '<br>')}</p>`;
+  }).join('');
+}
 
 export const AdminBlogPage: React.FC = () => {
   const { data: posts = [], createBlogPost, updateBlogPost, deleteBlogPost } = useBlogPosts(false);
@@ -16,6 +32,7 @@ export const AdminBlogPage: React.FC = () => {
 
   const {
     register,
+    control,
     handleSubmit,
     reset,
     formState: { errors },
@@ -41,7 +58,7 @@ export const AdminBlogPage: React.FC = () => {
       title: '',
       slug: '',
       summary: '',
-      content: '## Introduction\n\nContenu rédigé de l\'article...\n\n## Bonnes pratiques\n\nExplications techniques détaillées.',
+      content: '<h2>Introduction</h2><p>Contenu rédigé de l’article...</p><h2>Bonnes pratiques</h2><p>Explications techniques détaillées.</p>',
       main_image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop',
       category: 'Architecture',
       tags: 'Backend, Architecture, CleanCode',
@@ -58,7 +75,7 @@ export const AdminBlogPage: React.FC = () => {
       title: post.title,
       slug: post.slug,
       summary: post.summary,
-      content: post.content,
+      content: toEditorHtml(post.content),
       main_image: post.main_image,
       category: post.category,
       tags: post.tags.join(', '),
@@ -242,11 +259,11 @@ export const AdminBlogPage: React.FC = () => {
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs font-mono font-medium text-zinc-700 uppercase">Contenu (Markdown supporté) *</label>
-            <textarea
-              rows={8}
-              {...register('content')}
-              className="w-full px-3 py-2 rounded-lg border border-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900 font-mono text-xs"
+            <label className="text-xs font-mono font-medium text-zinc-700 uppercase">Contenu de l’article *</label>
+            <Controller
+              control={control}
+              name="content"
+              render={({ field }) => <RichTextEditor value={field.value} onChange={field.onChange} placeholder="Rédigez le contenu de votre article…" minHeight="320px" />}
             />
             {errors.content && <p className="text-xs text-red-600">{errors.content.message}</p>}
           </div>

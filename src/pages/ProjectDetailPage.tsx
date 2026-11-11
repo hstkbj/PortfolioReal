@@ -1,4 +1,5 @@
 import React from 'react';
+import DOMPurify from 'dompurify';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, 
@@ -134,11 +135,11 @@ export const ProjectDetailPage: React.FC = () => {
             <h2 className="text-xl font-bold text-zinc-950 border-b border-zinc-200 pb-3">
               Description & Réalisation technique
             </h2>
-            <div className="prose prose-zinc max-w-none text-zinc-700 leading-relaxed text-sm sm:text-base space-y-4">
-              <p className="whitespace-pre-line">
-                {project.description_full}
-              </p>
-            </div>
+            {/<[a-z][\s\S]*>/i.test(project.description_full) ? (
+              <div className="rich-content max-w-none text-sm leading-relaxed text-zinc-700 sm:text-base" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(project.description_full) }} />
+            ) : (
+              <p className="whitespace-pre-line text-sm leading-relaxed text-zinc-700 sm:text-base">{project.description_full}</p>
+            )}
 
             {/* Gallery images if present */}
             {project.gallery_images && project.gallery_images.length > 0 && (

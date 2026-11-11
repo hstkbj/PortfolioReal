@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { 
   Plus, 
@@ -14,6 +14,7 @@ import { projectSchema, ProjectFormData } from '../../schemas';
 import { Project } from '../../types';
 import { Modal } from '../../components/common/Modal';
 import { Button } from '../../components/common/Button';
+import { RichTextEditor } from '../../components/admin/RichTextEditor';
 
 export const AdminProjectsPage: React.FC = () => {
   const { data: projects = [], createProject, updateProject, deleteProject } = useProjects();
@@ -25,6 +26,7 @@ export const AdminProjectsPage: React.FC = () => {
 
   const {
     register,
+    control,
     handleSubmit,
     reset,
     formState: { errors },
@@ -345,10 +347,10 @@ export const AdminProjectsPage: React.FC = () => {
 
           <div className="space-y-1">
             <label className="text-xs font-mono font-medium text-zinc-700 uppercase">Description détaillée & architecture *</label>
-            <textarea
-              rows={5}
-              {...register('description_full')}
-              className="w-full px-3 py-2 rounded-lg border border-zinc-200 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900"
+            <Controller
+              control={control}
+              name="description_full"
+              render={({ field }) => <RichTextEditor value={field.value} onChange={field.onChange} placeholder="Décrivez le projet, son architecture et les choix techniques…" />}
             />
             {errors.description_full && <p className="text-xs text-red-600">{errors.description_full.message}</p>}
           </div>

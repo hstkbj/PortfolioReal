@@ -1,4 +1,5 @@
 import React from 'react';
+import DOMPurify from 'dompurify';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Clock, Calendar, User, Tag, Share2, ArrowRight } from 'lucide-react';
 import { useBlogPost, useBlogPosts } from '../hooks/usePortfolio';
@@ -97,8 +98,10 @@ export const BlogPostPage: React.FC = () => {
         </div>
 
         {/* Article Body Content */}
-        <div className="prose prose-zinc max-w-none text-zinc-800 leading-relaxed space-y-6 text-base border-b border-zinc-200 pb-12">
-          {post.content.split('\n\n').map((paragraph, index) => {
+        <div className="rich-content max-w-none border-b border-zinc-200 pb-12 text-base leading-relaxed text-zinc-800">
+          {/<[a-z][\s\S]*>/i.test(post.content) ? (
+            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }} />
+          ) : post.content.split('\n\n').map((paragraph, index) => {
             if (paragraph.startsWith('## ')) {
               return (
                 <h2 key={index} className="text-2xl font-bold text-zinc-950 pt-4 pb-1 border-b border-zinc-100">
